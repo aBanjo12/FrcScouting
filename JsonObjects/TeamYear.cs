@@ -1,4 +1,10 @@
-namespace FrcScouting.JsonObjects;
+// ReSharper disable InconsistentNaming
+// ReSharper disable ClassNeverInstantiated.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+using System.Reflection;
+
+namespace FrcScouting.JsonObjects.TeamYear;
 
 public class TeamYear
 {
@@ -19,8 +25,8 @@ public class TeamYear
 public class Epa
 {
     public Total_points total_points { get; set; }
-    public int unitless { get; set; }
-    public int norm { get; set; }
+    public double unitless { get; set; }
+    public double norm { get; set; }
     public double[] conf { get; set; }
     public Breakdown breakdown { get; set; }
     public Stats stats { get; set; }
@@ -61,162 +67,134 @@ public class Breakdown
     public Endgame_spotlight_points endgame_spotlight_points { get; set; }
     public Rp_1 rp_1 { get; set; }
     public Rp_2 rp_2 { get; set; }
+
+    public Dictionary<string, Mean_Standard> getPoints()
+    {
+        Mean_Standard?[] mean_standards = GetType().GetProperties().Where(p => p.GetValue(this) != null).Select(p => p.GetValue(this) as Mean_Standard).ToArray();
+        
+        object obj = this;
+        PropertyInfo[] properties = obj.GetType().GetProperties();
+
+        Dictionary<string, Mean_Standard> result = new Dictionary<string, Mean_Standard>();
+        
+        for (int i = 0; i < mean_standards.Length; i++)
+        {
+            result.Add(properties[i].Name, mean_standards[i]);
+        }
+
+        Console.WriteLine(result.Count + " " + mean_standards.Length + " " + this.GetType().GetProperties().Length);
+        return result;
+    }
 }
 
-public class Total_points1
+public class Mean_Standard
 {
     public double mean { get; set; }
     public double sd { get; set; }
 }
 
-public class Auto_points
+public class Total_points1 : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Teleop_points
+public class Auto_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_points
+public class Teleop_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Melody_rp
+public class Endgame_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Harmony_rp
+public class Melody_rp : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Tiebreaker_points
+public class Harmony_rp : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Auto_leave_points
+public class Tiebreaker_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Auto_notes
+public class Auto_leave_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Auto_note_points
+public class Auto_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Teleop_notes
+public class Auto_note_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Teleop_note_points
+public class Teleop_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Amp_notes
+public class Teleop_note_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Amp_points
+public class Amp_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Speaker_notes
+public class Amp_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Speaker_points
+public class Speaker_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Amplified_notes
+public class Speaker_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Total_notes
+public class Amplified_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Total_note_points
+public class Total_notes : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_park_points
+public class Total_note_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_on_stage_points
+public class Endgame_park_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_harmony_points
+public class Endgame_on_stage_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_trap_points
+public class Endgame_harmony_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Endgame_spotlight_points
+public class Endgame_trap_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Rp_1
+public class Endgame_spotlight_points : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
 }
 
-public class Rp_2
+public class Rp_1 : Mean_Standard
 {
-    public double mean { get; set; }
-    public double sd { get; set; }
+}
+
+public class Rp_2 : Mean_Standard
+{
 }
 
 public class Stats

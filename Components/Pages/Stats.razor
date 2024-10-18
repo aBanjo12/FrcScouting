@@ -1,48 +1,47 @@
-﻿@page "/weather"
+﻿@page "/stats"
+@using FrcScouting.JsonObjects.TeamYear
 @attribute [StreamRendering]
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Stats</PageTitle>
 
-<h1>Weather</h1>
-
-<p>This component demonstrates showing data.</p>
-
-@if (forecasts == null)
+@if (team != null)
 {
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
+    <h1>@team.name</h1>
+
+    <p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
+
     <table class="table">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th style="width: 5%">point type</th>
+            <th style="width: 10%">mean</th>
+            <th>standard deviation</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var forecast in forecasts)
+        @foreach (var pair in team.epa.breakdown.getPoints())
         {
             <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
+                <td>@pair.Key</td>
+                <td>@pair.Value.mean</td>
+                <td>@pair.Value.sd</td>
             </tr>
         }
         </tbody>
     </table>
 }
+else
+{
+    <h1>loading...</h1>
+}
+
 
 @code {
 
-    protected override Task OnInitializedAsync()
+    TeamYear? team;
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        team = await ApiInterface.get1014();
     }
 
 

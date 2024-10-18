@@ -1,8 +1,11 @@
+using FrcScouting.JsonObjects.TeamYear;
+using Newtonsoft.Json;
+
 namespace FrcScouting;
 
 public static class ApiInterface
 {
-    public static async Task<string> get1014()
+    public static async Task<TeamYear> get1014()
     {
         // Create an instance of HttpClient
         HttpClient client = new HttpClient();
@@ -11,7 +14,7 @@ public static class ApiInterface
         client.BaseAddress = new Uri("https://api.statbotics.io/");
 
         // Make the GET request
-        HttpResponseMessage response = await client.GetAsync("v3/team_year/4/2024");
+        HttpResponseMessage response = await client.GetAsync("v3/team_year/1014/2024");
 
         // Check the response status code
         if (response.IsSuccessStatusCode)
@@ -19,7 +22,7 @@ public static class ApiInterface
             // Read the response content
             string responseBody = await response.Content.ReadAsStringAsync();
             Console.WriteLine(responseBody);
-            return responseBody;
+            return JsonConvert.DeserializeObject<TeamYear>(responseBody);
         }
 
         return null;
