@@ -1,4 +1,4 @@
-﻿@page "/stats"
+﻿@page "/stats/{teamNumber}"
 @using FrcScouting.JsonObjects.TeamYear
 @attribute [StreamRendering]
 
@@ -6,7 +6,7 @@
 
 @if (team != null)
 {
-    <h1>@team.name</h1>
+    <h1>@team.name @teamNumber</h1>
 
     <p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
 
@@ -33,15 +33,19 @@
 else
 {
     <h1>loading...</h1>
+    <p>if this takes a long time then the team number is likely wrong or the statbotics server is down</p>
 }
 
 
 @code {
+    TimeSpan requestedTimeSpan { get; set; }
 
+    [Parameter] 
+    public string? teamNumber { get; set; }
     TeamYear? team;
     protected override async Task OnInitializedAsync()
     {
-        team = await ApiInterface.get1014();
+        team = await ApiInterface.getTeam(int.Parse(teamNumber));
     }
 
 

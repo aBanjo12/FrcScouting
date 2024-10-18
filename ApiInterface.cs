@@ -5,7 +5,7 @@ namespace FrcScouting;
 
 public static class ApiInterface
 {
-    public static async Task<TeamYear> get1014()
+    public static async Task<TeamYear> getTeam(int teamNumber)
     {
         // Create an instance of HttpClient
         HttpClient client = new HttpClient();
@@ -14,7 +14,7 @@ public static class ApiInterface
         client.BaseAddress = new Uri("https://api.statbotics.io/");
 
         // Make the GET request
-        HttpResponseMessage response = await client.GetAsync("v3/team_year/1014/2024");
+        HttpResponseMessage response = await client.GetAsync("v3/team_year/" + teamNumber + "/2024");
 
         // Check the response status code
         if (response.IsSuccessStatusCode)
@@ -27,4 +27,11 @@ public static class ApiInterface
 
         return null;
     }
+
+    public static async Task<TeamYear> get1014()
+    {
+        return await getTeam(1014);
+    }
+    
+    
 }

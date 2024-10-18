@@ -1,20 +1,32 @@
-﻿@page "/counter"
+﻿@page "/search"
 @rendermode InteractiveServer
+@inject NavigationManager _NavigationManager
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Search</PageTitle>
+<p>input team number</p>
+<input type="text" @bind="@parameter">
+<button @onclick="validateInput">search</button>
+@if (valid)
+{
+    _NavigationManager.NavigateTo("stats/" + teamNumber + "/");
+}
+else
+{
+    <p>not valid</p>
+}
 
-<h1>Counter</h1>
+@code
+{
+    string? parameter { get; set; }
+    bool valid = false;
+    int teamNumber = -1;
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    void validateInput()
     {
-        currentCount++;
+        if (int.TryParse(parameter, out teamNumber))
+            valid = true;
+        else
+            valid = false;
+        
     }
-
 }
