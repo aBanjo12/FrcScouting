@@ -1,9 +1,8 @@
 @page "/Dev"
+@rendermode InteractiveServer
 
 <PageTitle>Dev</PageTitle>
 
-<p>comp id (make this up):</p>
-<input type="text" @bind="id"/>
 <p>blue alliance comp key (go find this)</p>
 <input type="text" @bind="key"/>
 <button @onclick="createComp">create comp</button>
@@ -11,11 +10,12 @@
 @code
 {
     string key;
-    string id;
     void createComp()
     {
-        FrcScouting.Comp comp = new FrcScouting.Comp();
-        comp.id = id;
-        comp.key = key;
+        //Environment.Exit(1);
+        Console.WriteLine("created comp");
+        FrcScouting.Comp comp = new FrcScouting.Comp(key);
+        
+        CompList.List.Add(key, comp);
     }
 }

@@ -22,17 +22,4 @@
 
 @code
 {
-    protected override Task OnInitializedAsync()
-    {
-        if (File.Exists("comps.json"))
-        {
-            Comp.Comps = JsonConvert.DeserializeObject<List<Comp>>(File.ReadAllText("comps.json"));
-        }
-        else
-        {
-            Comp.Comps = new List<Comp>();
-        }
-
-        return base.OnInitializedAsync();
-    }
 }

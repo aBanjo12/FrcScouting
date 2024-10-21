@@ -1,12 +1,16 @@
 using FrcScouting.JsonObjects.TeamYear;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace FrcScouting;
 
 public class Comp
 {
-    public static List<Comp> Comps = new();
-    
+    public Comp(string key)
+    {
+        this.key = key;
+        
+    }
     public List<CompRobot> robots = new List<CompRobot>();
-    public string id { get; set; }
     public string key { get; set; }
 }
