@@ -4,16 +4,18 @@
 
 <p>comp id (make this up):</p>
 <input type="text" @bind="id"/>
-<p>blue alliance comp url (go find this)</p>
-<input type="text" @bind="url"/>
+<p>blue alliance comp key (go find this)</p>
+<input type="text" @bind="key"/>
 <button @onclick="createComp">create comp</button>
 
 @code
 {
-    string url;
+    string key;
     string id;
     void createComp()
     {
-        
+        FrcScouting.Comp comp = new FrcScouting.Comp();
+        comp.id = id;
+        comp.key = key;
     }
 }

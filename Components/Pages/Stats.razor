@@ -5,39 +5,47 @@
 
 <PageTitle>Stats</PageTitle>
 
-@if (team != null)
+@if (failed)
 {
-    <h1>@team.name @teamNumber</h1>
-
-    <p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
-
-    <table class="table" style="width: 500px">
-        <thead>
-        <tr>
-            <th>point type</th>
-            <th>mean</th>
-            <th>deviation</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var pair in teamMeanStandards)
-        {
-            <tr>
-                <td>@pair.Key</td>
-                <td style="background-color: @getRG(pair.Key)">@pair.Value.mean</td>
-                <td>@pair.Value.sd</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <h1>failed to load team or year</h1>
 }
 else
 {
-    <h1>loading...</h1>
-    <p>if this takes a long time then the team number is likely wrong or the statbotics server is down</p>
+    if (team != null)
+    {
+        <h1>@team.name @teamNumber</h1>
+
+        <p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
+
+        <table class="table" style="width: 500px">
+            <thead>
+            <tr>
+                <th>point type</th>
+                <th>mean</th>
+                <th>deviation</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var pair in teamMeanStandards)
+            {
+                <tr>
+                    <td>@pair.Key</td>
+                    <td style="background-color: @getRG(pair.Key)">@pair.Value.mean</td>
+                    <td>@pair.Value.sd</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>loading...</h1>
+        <p>if this takes a long time then the team number is likely wrong or the statbotics server is down</p>
+    }
 }
 
 @code {
+    bool failed = false;
     [Parameter] 
     public string? teamNumber { get; set; }
     TeamYear? team;
@@ -48,15 +56,29 @@ else
     Dictionary<string, Percentile> percentiles;
     protected override async Task OnInitializedAsync()
     {
-        team = await ApiInterface.getTeam(int.Parse(teamNumber));
-        if (ApiInterface.years.TryGetValue(2024, out var year1))
+        
+        ApiRequest<TeamYear> apiTeam = await StatboticsApiInterface.getTeam(int.Parse(teamNumber));
+        if (!apiTeam.Result)
+        {
+            failed = true;
+            return;
+        }
+
+        team = apiTeam.ParsedResponse;
+        if (StatboticsApiInterface.years.TryGetValue(2024, out var year1))
         {
             currentYear = year1;
         }
         else
         {
-            ApiInterface.years.Add(2024, await ApiInterface.getYear(2024));
-            currentYear = ApiInterface.years[2024];
+            ApiRequest<Year> apiYear = await StatboticsApiInterface.getYear(2024);
+            if (!apiYear.Result)
+            {
+                failed = true;
+                return;
+            }
+            StatboticsApiInterface.years.Add(2024, apiYear.ParsedResponse);
+            currentYear = StatboticsApiInterface.years[2024];
         }
         means = currentYear.breakdown.getPoints();
         teamMeanStandards = team.epa.breakdown.getPoints();
@@ -84,24 +106,6 @@ else
 
         return "#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00";
     }
-
-
-    //private WeatherForecast[]? forecasts;
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     // Simulate asynchronous loading to demonstrate streaming rendering
-    //     await Task.Delay(500);
-    //
-    //     var startDate = DateOnly.FromDateTime(DateTime.Now);
-    //     var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-    //     forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-    //     {
-    //         Date = startDate.AddDays(index),
-    //         TemperatureC = Random.Shared.Next(-20, 55),
-    //         Summary = summaries[Random.Shared.Next(summaries.Length)]
-    //     }).ToArray();
-    // }
 
     private class WeatherForecast
     {
