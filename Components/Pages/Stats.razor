@@ -1,5 +1,6 @@
 ﻿@page "/stats/{teamNumber}"
 @using FrcScouting.JsonObjects.TeamYear
+@using FrcScouting.JsonObjects.Year
 @attribute [StreamRendering]
 
 <PageTitle>Stats</PageTitle>
@@ -19,11 +20,11 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var pair in team.epa.breakdown.getPoints())
+        @foreach (var pair in teamMeanStandards)
         {
             <tr>
                 <td>@pair.Key</td>
-                <td>@pair.Value.mean</td>
+                <td style="background-color: @getRG(pair.Key)">@pair.Value.mean</td>
                 <td>@pair.Value.sd</td>
             </tr>
         }
@@ -36,16 +37,52 @@ else
     <p>if this takes a long time then the team number is likely wrong or the statbotics server is down</p>
 }
 
-
 @code {
-    TimeSpan requestedTimeSpan { get; set; }
-
     [Parameter] 
     public string? teamNumber { get; set; }
     TeamYear? team;
+    Year currentYear;
+    int year = 2024;
+    Dictionary<string, double> means;
+    Dictionary<string, Mean_Standard> teamMeanStandards;
+    Dictionary<string, Percentile> percentiles;
     protected override async Task OnInitializedAsync()
     {
         team = await ApiInterface.getTeam(int.Parse(teamNumber));
+        if (ApiInterface.years.TryGetValue(2024, out var year1))
+        {
+            currentYear = year1;
+        }
+        else
+        {
+            ApiInterface.years.Add(2024, await ApiInterface.getYear(2024));
+            currentYear = ApiInterface.years[2024];
+        }
+        means = currentYear.breakdown.getPoints();
+        teamMeanStandards = team.epa.breakdown.getPoints();
+        percentiles = currentYear.percentiles.getPoints();
+    }
+
+    public string getRG(string key)
+    {
+        if (!percentiles.ContainsKey(key))
+            return "#ffffff";
+        
+        int greenOffset = 0;
+        int redOffset = 0;
+
+        double topPercent = percentiles[key].p99;
+        double botPercent = percentiles[key].p25;
+
+        if (teamMeanStandards[key].mean < botPercent)
+            return "#4f0500";
+        if (teamMeanStandards[key].mean > topPercent)
+            return "#0000ff";
+
+        greenOffset = (int)Math.Floor(((teamMeanStandards[key].mean - botPercent) / topPercent) * 256);
+        redOffset = 256 - greenOffset;
+
+        return "#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00";
     }
 
 

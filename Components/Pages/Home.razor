@@ -3,3 +3,22 @@
 <PageTitle>Home</PageTitle>
 
 <h1>1014 Scouting</h1>
+
+@if (currentComp == null)
+{
+    <p>no comp currently active, if there should be one ask scouting head</p>
+}
+else
+{
+    <p>comp active</p>
+}
+
+@code
+{
+    Comp? currentComp = null;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+}

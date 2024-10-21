@@ -1,5 +1,8 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable ClassNeverInstantiated.Global
+
+using System.Reflection;
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace FrcScouting.JsonObjects.Year;
@@ -41,6 +44,24 @@ public class Percentiles
     public Endgame_spotlight_points endgame_spotlight_points { get; set; }
     public Rp_1 rp_1 { get; set; }
     public Rp_2 rp_2 { get; set; }
+    
+    public Dictionary<string, Percentile> getPoints()
+    {
+        Percentile[] mean_standards = GetType().GetProperties().Where(p => p.GetValue(this) != null).Select(p => p.GetValue(this) as Percentile).ToArray();
+        
+        object obj = this;
+        PropertyInfo[] properties = obj.GetType().GetProperties();
+
+        Dictionary<string, Percentile> result = new Dictionary<string, Percentile>();
+        
+        for (int i = 0; i < mean_standards.Length; i++)
+        {
+            result.Add(properties[i].Name, mean_standards[i]);
+        }
+
+        Console.WriteLine(result.Count + " " + mean_standards.Length + " " + this.GetType().GetProperties().Length);
+        return result;
+    }
 }
 
 public abstract class Percentile
@@ -181,6 +202,24 @@ public class Breakdown
     public double endgame_spotlight_points_mean { get; set; }
     public double rp_1_mean { get; set; }
     public double rp_2_mean { get; set; }
+    
+    public Dictionary<string, double> getPoints()
+    {
+        double?[] mean_standards = GetType().GetProperties().Where(p => p.GetValue(this) != null).Select(p => p.GetValue(this) as double?).ToArray();
+        
+        object obj = this;
+        PropertyInfo[] properties = obj.GetType().GetProperties();
+
+        Dictionary<string, double> result = new Dictionary<string, double>();
+        
+        for (int i = 0; i < mean_standards.Length; i++)
+        {
+            result.Add(properties[i].Name, mean_standards[i].Value);
+        }
+
+        Console.WriteLine(result.Count + " " + mean_standards.Length + " " + this.GetType().GetProperties().Length);
+        return result;
+    }
 }
 
 public class Metrics
