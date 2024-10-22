@@ -10,5 +10,23 @@
 }
 else
 {
-    <p>comp active</p>
+    <p>comp active!</p>
+    
+    <table class="table" style="width: 500px">
+        <thead>
+        <tr>
+            <th>comp id</th>
+            <th>link</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var pair in CompList.List)
+        {
+            <tr>
+                <td>@pair.Key</td>
+                <td </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }
