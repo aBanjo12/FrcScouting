@@ -9,19 +9,17 @@ public class Comp
     public Comp(string key)
     {
         this.key = key;
-        string[] teamids = BlueApiInterface.getTeams(key).Result.ParsedResponse;
-        foreach (var teamId in teamids)
-        {
-            var team = StatboticsApiInterface.getTeam(int.Parse(teamId));
-            if (team.Result.Result)
-            {
-                robots.Add((CompRobot)team.Result.ParsedResponse);
-                Console.WriteLine("found team");
-            }
-        }
+        numbers = BlueApiInterface.Event.GetEventTeamsKeys(key).ToArray();
+    }
 
-        Console.WriteLine("Comp finished");
-}
+    public async void populateTeamsDataAsync()
+    {
+        var tasks = numbers.Select(i => StatboticsApiInterface.getTeam(int.Parse(i.Substring(3))));
+        var results = await Task.WhenAll(tasks);
+    }
+    public string[] numbers;
+    public List<ApiRequest<TeamYear>> TeamRequests = new();
+    
     public List<CompRobot> robots = new List<CompRobot>();
     public string key { get; set; }
 }
