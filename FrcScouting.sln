@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrcScouting", "FrcScouting.csproj", "{9BF33511-688F-40BA-B258-251BAFC69763}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBAAPI.V3Client", "..\tba-api-client-csharp-netcore\src\TBAAPI.V3Client\TBAAPI.V3Client.csproj", "{F72D4643-DBEE-4C67-AD75-1A8E58EED0BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{9BF33511-688F-40BA-B258-251BAFC69763}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BF33511-688F-40BA-B258-251BAFC69763}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BF33511-688F-40BA-B258-251BAFC69763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72D4643-DBEE-4C67-AD75-1A8E58EED0BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72D4643-DBEE-4C67-AD75-1A8E58EED0BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72D4643-DBEE-4C67-AD75-1A8E58EED0BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72D4643-DBEE-4C67-AD75-1A8E58EED0BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
