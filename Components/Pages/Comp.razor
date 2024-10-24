@@ -1,6 +1,51 @@
 @page "/Comp/{compid}"
+@using System.Runtime.CompilerServices
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+@inject NavigationManager _NavigationManager
+
+@if (comp.robots == null)
+{
+    <h1>Fetching robots</h1>
+}
+else
+{
+    <table class="table" style="width: 500px">
+        <thead>
+        <tr>
+            <th>team number</th>
+            <th>total epa</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var bot in comp.robots)
+        {
+            <tr>
+                <td><a @onclick="@(()=>nav(bot.TeamYear.team))">@bot.TeamYear.team</a></td>
+                <td>@bot.TeamYear.epa.total_points</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 
 @code
 {
     [Parameter] public string compid { get; set; }
+    FrcScouting.Comp comp;
+
+    protected override Task OnInitializedAsync()
+    {
+        comp = CompList.List[compid];
+        if (comp.robots == null)
+            comp.populateTeamsDataAsync();
+        
+        return Task.CompletedTask;
+        
+    }
+
+    void nav(string key)
+    {
+        _NavigationManager.NavigateTo($"comp/{compid}/{key}/");
+    }
 }

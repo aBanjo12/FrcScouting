@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject NavigationManager _NavigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -23,10 +24,18 @@ else
         @foreach (var pair in CompList.List)
         {
             <tr>
-                <td>@pair.Key</td>
-                <td>@pair.Value.key</td>
+                <td>@pair.Value.CompEvent.Name</td>
+                <td><a @onclick="@(()=>nav(@pair.Key))">@pair.Key</a></td>
             </tr>
         }
         </tbody>
     </table>
+}
+
+@code
+{
+    void nav(string key)
+    {
+        _NavigationManager.NavigateTo("comp/" + key + "/");
+    }
 }

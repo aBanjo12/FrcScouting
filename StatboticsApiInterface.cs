@@ -9,6 +9,7 @@ public static class StatboticsApiInterface
     public static Dictionary<int, Year> years = new Dictionary<int, Year>();
     public static async Task<ApiRequest<TeamYear>> getTeam(int teamNumber) 
     {
+        Console.WriteLine("Making request");
         return await makeRequest<TeamYear>("v3/team_year/" + teamNumber + "/2024");
     }
     public static async Task<ApiRequest<Year>> getYear(int year)
@@ -24,11 +25,14 @@ public static class StatboticsApiInterface
         // Set the base address (optional)
         client.BaseAddress = new Uri("https://api.statbotics.io/");
 
+        Console.WriteLine("getting");
+
         // Make the GET request
         HttpResponseMessage response = await client.GetAsync(uri);
             
         if (response.IsSuccessStatusCode)
         {
+            Console.WriteLine("success");
             // Read the response content
             string responseBody = await response.Content.ReadAsStringAsync();
             return new ApiRequest<T>(JsonConvert.DeserializeObject<T>(responseBody), true);
