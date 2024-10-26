@@ -71,14 +71,7 @@ else
         }
         else
         {
-            ApiRequest<Year> apiYear = await StatboticsApiInterface.getYear(2024);
-            if (!apiYear.Result)
-            {
-                failed = true;
-                return;
-            }
-            YearData.Years.Add(2024, apiYear.ParsedResponse);
-            currentYear = YearData.Years[2024];
+            currentYear = await YearData.getYear(2024);
         }
         means = currentYear.breakdown.getPoints();
         teamMeanStandards = team.epa.breakdown.getPoints();

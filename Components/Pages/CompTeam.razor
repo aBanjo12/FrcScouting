@@ -1,1 +1,7 @@
 @page "/comp/{id}/{team}"
+
+@code
+{
+    [Parameter] public string id { get; set; }
+    [Parameter] public string team { get; set; }
+}

@@ -1,4 +1,6 @@
+using System.Security.Cryptography.Xml;
 using FrcScouting.JsonObjects.TeamYear;
+using FrcScouting.JsonObjects.Year;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using TBAAPI.V3Client.Model;
@@ -25,9 +27,14 @@ public class Comp
 
     public async void RankTeams()
     {
+        Console.WriteLine("ranking teams");
         if (robots == null)
             throw new Exception("robot list null");
-        foreach (string str in robots[0].teamMeanStandards.Keys)
+        if (YearData.Years.TryGetValue(CompEvent.Year, out var year))
+        {
+            
+        }
+        foreach (string str in year.breakdown.getPoints().Keys)
         {
             Ranks.Add(str, robots.Select(x => x.teamMeanStandards[str].mean).ToArray());
         }
@@ -36,9 +43,11 @@ public class Comp
         {
             foreach (var str in Ranks.Keys)
             {
+                Console.WriteLine(str + robot.TeamYear.name);
                 robot.relativeRanks[str] = Array.IndexOf(Ranks[str], robot.teamMeanStandards[str]);
             }
         }
+        Console.WriteLine("ranking teams complete " + robots.Count + " teams" + Ranks.Count);
     }
 
     public Dictionary<string, double[]> Ranks = new Dictionary<string, double[]>();
