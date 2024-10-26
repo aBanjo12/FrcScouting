@@ -6,7 +6,6 @@ namespace FrcScouting;
 
 public static class StatboticsApiInterface
 {
-    public static Dictionary<int, Year> years = new Dictionary<int, Year>();
     public static async Task<ApiRequest<TeamYear>> getTeam(int teamNumber) 
     {
         Console.WriteLine("Making request");

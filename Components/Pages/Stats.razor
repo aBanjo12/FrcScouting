@@ -65,7 +65,7 @@ else
         }
 
         team = apiTeam.ParsedResponse;
-        if (StatboticsApiInterface.years.TryGetValue(2024, out var year1))
+        if (YearData.Years.TryGetValue(2024, out var year1))
         {
             currentYear = year1;
         }
@@ -77,8 +77,8 @@ else
                 failed = true;
                 return;
             }
-            StatboticsApiInterface.years.Add(2024, apiYear.ParsedResponse);
-            currentYear = StatboticsApiInterface.years[2024];
+            YearData.Years.Add(2024, apiYear.ParsedResponse);
+            currentYear = YearData.Years[2024];
         }
         means = currentYear.breakdown.getPoints();
         teamMeanStandards = team.epa.breakdown.getPoints();

@@ -24,4 +24,4 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.Run("https://*:7200");
+app.Run(/*"https://*:7200"*/);
