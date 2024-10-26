@@ -30,4 +30,5 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.Run("https://*:8080");
+app.Run("https://*:80");
+
