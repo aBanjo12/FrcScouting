@@ -1,10 +1,16 @@
 using FrcScouting.Components;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("frcscouting")
+    .PersistKeysToFileSystem(new System.IO.DirectoryInfo(FileSystemXmlRepository.DefaultKeyStorageDirectory.FullName));
 
 var app = builder.Build();
 
