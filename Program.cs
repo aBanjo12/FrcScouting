@@ -8,9 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddDataProtection()
-    .SetApplicationName("frcscouting")
-    .PersistKeysToFileSystem(new System.IO.DirectoryInfo("$HOME/.aspnet/DataProtection-Keys"));
+// builder.Services.AddDataProtection()
+//     .SetApplicationName("frcscouting")
+//     .PersistKeysToFileSystem(new System.IO.DirectoryInfo("$HOME/.aspnet/DataProtection-Keys"));
 
 var app = builder.Build();
 
