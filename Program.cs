@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDataProtection()
     .SetApplicationName("frcscouting")
-    .PersistKeysToFileSystem(new System.IO.DirectoryInfo(FileSystemXmlRepository.DefaultKeyStorageDirectory.FullName));
+    .PersistKeysToFileSystem(new System.IO.DirectoryInfo("$HOME/.aspnet/DataProtection-Keys"));
 
 var app = builder.Build();
 
