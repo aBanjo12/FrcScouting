@@ -28,5 +28,5 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.Run("http://*:5200");
+app.Run("http://*:5200:80");
 
