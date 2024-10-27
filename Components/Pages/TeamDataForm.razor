@@ -2,20 +2,22 @@
 @inject NavigationManager _NavigationManager
 @rendermode InteractiveServer
 
+<h1>scouting @teamnum</h1>
 
-    <label>Is robot short enough to go under stage? <InputCheckbox @bind-Value="stage"/></label>
-    <label>Can robot score from far away? <InputCheckbox @bind-Value="far"/></label>
-    <label>Can robot shuttle? (shoot rings across the field to it's teammates) <InputCheckbox @bind-Value="shuttle"/></label>
-    <label>Can robot climb with other robots on the same chain? <InputCheckbox @bind-Value="climb"/></label>
-    <label>Can robot play defense? <InputCheckbox @bind-Value="def"/></label>
-    <label>
-        <select @bind="sp">
-            <option value="@Speeds.Slow">slow</option>
-            <option value="@Speeds.Average">Average</option>
-            <option value="@Speeds.Fast">Fast</option>
-        </select>
-    </label>
-    <button @onclick="submit">submit</button>
+<p><label>Is robot short enough to go under stage? <InputCheckbox @bind-Value="stage"/></label></p>
+<p><label>Can robot score from far away? <InputCheckbox @bind-Value="far"/></label></p>
+<p><label>Can robot shuttle? (shoot rings across the field to it's teammates) <InputCheckbox @bind-Value="shuttle"/></label></p>
+<p><label>Can robot climb with other robots on the same chain? <InputCheckbox @bind-Value="climb"/></label></p>
+<p><label>Can robot play defense? <InputCheckbox @bind-Value="def"/></label></p>
+<p><label>
+    robot speed:
+    <select @bind="sp">
+        <option value="@Speeds.Slow">slow</option>
+        <option value="@Speeds.Average">Average</option>
+        <option value="@Speeds.Fast">Fast</option>
+    </select>
+</label></p>
+<p><button @onclick="submit">submit</button></p>
 
 @code
 {

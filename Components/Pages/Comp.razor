@@ -10,19 +10,22 @@
 }
 else
 {
+    <h1>CORI team list</h1>
     <table class="table" style="width: 500px">
         <thead>
         <tr>
             <th>team number</th>
             <th>total epa</th>
+            <th>scout form</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var bot in comp.robots)
         {
             <tr>
-                <td><a @onclick="@(()=>nav(bot.TeamYear.team))">@bot.TeamYear.team</a></td>
+                <td><a style="cursor:pointer; color:blue; text-decoration:underline;" @onclick="@(()=>nav(bot.TeamYear.team))">@bot.TeamYear.team</a></td>
                 <td>@bot.TeamYear.epa.total_points.mean</td>
+                <td><a style="cursor:pointer; color:blue; text-decoration:underline;" @onclick="@(() => nav(bot.TeamYear.team + "/form"))">form</a></td>
             </tr>
         }
         </tbody>
@@ -46,6 +49,6 @@ else
 
     void nav(string key)
     {
-        _NavigationManager.NavigateTo($"comp/{compid}/{key}/");
+        _NavigationManager.NavigateTo($"comp/{compid}/{key}");
     }
 }
