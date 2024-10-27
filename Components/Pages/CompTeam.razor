@@ -1,9 +1,19 @@
 @page "/comp/{id}/{teamNumber}"
 @using FrcScouting.JsonObjects.TeamYear
+@* @attribute [StreamRendering] *@
 
-<h1>@robot.TeamYear.team @teamNumber</h1>
+
+
+<h1>@robot.TeamYear.name @teamNumber</h1>
 
 <p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
+
+<p>under stage @robot.teamData.Select(x => x.underStage).Count(x => x) / @totalData</p>
+<p>under far from speaker @robot.teamData.Select(x => x.farFromSpeaker).Count(x => x) / @totalData</p>
+<p>can shuttle @robot.teamData.Select(x => x.canShuttle).Count(x => x) / @totalData</p>
+<p>can harmony climb @robot.teamData.Select(x => x.canHarmonyClimb).Count(x => x) / @totalData</p>
+<p>plays defense @robot.teamData.Select(x => x.defense).Count(x => x) / @totalData</p>
+<p>speed slow:@speeds.Count(x => x == Speeds.Slow) average:@speeds.Count(x => x == Speeds.Average) fast:@speeds.Count(x => x == Speeds.Fast)</p>
 
 <table class="table" style="width: 500px">
     <thead>
@@ -27,8 +37,11 @@
 
 @code
 {
+    int totalData;
     [Parameter] public string id { get; set; }
     [Parameter] public string teamNumber { get; set; }
+
+    IEnumerable<Speeds> speeds;
 
     FrcScouting.Comp comp;
     CompRobot robot; 
@@ -37,6 +50,8 @@
     {
         comp = CompList.List[id];
         robot = comp.robots.Find(x => x.TeamYear.team == teamNumber);
+        totalData = robot.teamData.Count;
+        speeds = robot.teamData.Select(x => x.robotSpeed);
         return Task.CompletedTask;
     }
     
@@ -44,10 +59,17 @@
     {
         if (!robot.relativeRanks.ContainsKey(key))
             return "#ffffff";
-
+        
         var greenOffset = (int)Math.Floor(((double)robot.relativeRanks[key] / comp.Ranks[key].Length)*256);
         var redOffset = 256 - greenOffset;
+        
+        Console.WriteLine(robot.relativeRanks[key]);
+        Console.WriteLine(comp.Ranks[key].Length);
 
+        // Console.WriteLine(greenOffset);
+        // Console.WriteLine(redOffset);
+
+        // Console.WriteLine("#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00");
         return "#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00";
     }
 }

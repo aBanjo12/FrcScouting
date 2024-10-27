@@ -13,7 +13,8 @@ public static class YearData
         {
             return null;
         }
-        Years.Add(2024, apiYear.ParsedResponse);
+        if (!Years.ContainsKey(year))
+            Years.Add(2024, apiYear.ParsedResponse);
         return Years[2024];
     }
 }

@@ -10,4 +10,9 @@ public class CompRobot(TeamYear teamYear)
     public Dictionary<string, int> relativeRanks = new();
     public Dictionary<string, Mean_Standard> teamMeanStandards = new();
     public List<TeamData> teamData = new();
+
+    public void rank(ref Dictionary<string, double[]> ranks)
+    {
+        
+    }
 }
