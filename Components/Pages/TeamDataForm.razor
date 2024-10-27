@@ -1,0 +1,47 @@
+@page "/comp/{compid}/form"
+
+<select @bind="teamNumber">
+    @foreach (var team in comp.numbers)
+    {
+        <option value="@team">@team</option>
+    }
+</select>
+
+<EditForm Model="model" OnSubmit="Submit" FormName="teamData">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>Is robot short enough to go under stage? <InputCheckbox @bind="model.underStage"/></label>
+    <label>Can robot score from far away? <InputCheckbox @bind="model.farFromSpeaker"/></label>
+    <label>Can robot shuttle? (shoot rings across the field to it's teammates) <InputCheckbox @bind="model.canShuttle"/></label>
+    <label>Can robot climb with other robots on the same chain? <InputCheckbox @bind="model.canHarmonyClimb"/></label>
+    <label>Can robot play defense? <InputCheckbox @bind="model.defense"/></label>
+    <label>
+        <select @bind="model.robotSpeed">
+            <option value="@Speeds.Slow">slow</option>
+            <option value="@Speeds.Average">Average</option>
+            <option value="@Speeds.Fast">Fast</option>
+        </select>
+    </label>
+    <button type="submit">submit</button>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public string compid { get; set; }
+    FrcScouting.Comp comp;
+    string teamNumber;
+    TeamData model;
+    
+
+    protected override Task OnInitializedAsync()
+    {
+        comp = CompList.List[compid];
+        return Task.CompletedTask;
+    }
+
+    void Submit()
+    {
+        comp.robots.Find(x => x.TeamYear.name == teamNumber).teamData.Add(model);
+    }
+}
