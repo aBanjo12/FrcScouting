@@ -9,4 +9,5 @@ public class CompRobot(TeamYear teamYear)
     public List<string> Comments = new List<string>();
     public Dictionary<string, int> relativeRanks = new();
     public Dictionary<string, Mean_Standard> teamMeanStandards = new();
+    public List<TeamData> teamData = new();
 }

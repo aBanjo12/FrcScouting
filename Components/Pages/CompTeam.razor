@@ -1,7 +1,53 @@
-@page "/comp/{id}/{team}"
+@page "/comp/{id}/{teamNumber}"
+@using FrcScouting.JsonObjects.TeamYear
+
+<h1>@robot.TeamYear.team @teamNumber</h1>
+
+<p>data is in epa (sort of like chess elo). Read about it <a href="https://www.statbotics.io/blog/epa">here</a></p>
+
+<table class="table" style="width: 500px">
+    <thead>
+    <tr>
+        <th>point type</th>
+        <th>mean</th>
+        <th>deviation</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var pair in robot.teamMeanStandards)
+    {
+        <tr>
+            <td>@pair.Key</td>
+            <td style="background-color: @getRG(pair.Key)">@pair.Value.mean</td>
+            <td>@pair.Value.sd</td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 @code
 {
     [Parameter] public string id { get; set; }
-    [Parameter] public string team { get; set; }
+    [Parameter] public string teamNumber { get; set; }
+
+    FrcScouting.Comp comp;
+    CompRobot robot; 
+    
+    protected override Task OnInitializedAsync()
+    {
+        comp = CompList.List[id];
+        robot = comp.robots.Find(x => x.TeamYear.team == teamNumber);
+        return Task.CompletedTask;
+    }
+    
+    public string getRG(string key)
+    {
+        if (!robot.relativeRanks.ContainsKey(key))
+            return "#ffffff";
+
+        var greenOffset = (int)Math.Floor(((double)robot.relativeRanks[key] / comp.Ranks[key].Length)*256);
+        var redOffset = 256 - greenOffset;
+
+        return "#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00";
+    }
 }
