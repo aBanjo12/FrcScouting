@@ -66,13 +66,6 @@
         var greenOffset = (int)Math.Floor(((double)robot.relativeRanks[key] / comp.Ranks[key].Length)*256);
         var redOffset = 256 - greenOffset;
         
-        Console.WriteLine(robot.relativeRanks[key]);
-        Console.WriteLine(comp.Ranks[key].Length);
-
-        // Console.WriteLine(greenOffset);
-        // Console.WriteLine(redOffset);
-
-        // Console.WriteLine("#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00");
         return "#" + redOffset.ToString("X").ToLower() + greenOffset.ToString("X").ToLower() + "00";
     }
 }

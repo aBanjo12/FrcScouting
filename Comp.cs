@@ -45,14 +45,11 @@ public class Comp
         var keys = robots[0].TeamYear.epa.breakdown.getPoints().Keys;
         foreach (string str in keys)
         {
-            Console.WriteLine(str);
             try
             {
                 double[] arr = robots.Select(x => x.teamMeanStandards[str].mean).ToArray();
                 Array.Sort(arr);
                 Ranks.Add(str, arr);
-                
-                Console.WriteLine(str);
             }
             catch (Exception e)
             {
@@ -64,7 +61,6 @@ public class Comp
         {
             foreach (var str in keys)
             {
-                Console.WriteLine(str + robot.TeamYear.name);
                 robot.relativeRanks[str] = Array.IndexOf(Ranks[str], robot.teamMeanStandards[str].mean);
             }
         }

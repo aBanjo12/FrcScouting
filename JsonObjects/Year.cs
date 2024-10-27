@@ -59,7 +59,6 @@ public class Percentiles
             result.Add(properties[i].Name, mean_standards[i]);
         }
 
-        Console.WriteLine(result.Count + " " + mean_standards.Length + " " + this.GetType().GetProperties().Length);
         return result;
     }
 }
@@ -217,7 +216,6 @@ public class Breakdown
             result.Add(properties[i].Name, mean_standards[i].Value);
         }
 
-        Console.WriteLine(result.Count + " " + mean_standards.Length + " " + this.GetType().GetProperties().Length);
         return result;
     }
 }
